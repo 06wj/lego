@@ -67,6 +67,35 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Stage">
+            <span class="title">
+                <a href="Stage.html">Stage</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Stage#_render"><a href="Stage.html#_render">_render</a></li>
+            
+                <li data-name="Stage#addChild"><a href="Stage.html#addChild">addChild</a></li>
+            
+                <li data-name="Stage#removeChild"><a href="Stage.html#removeChild">removeChild</a></li>
+            
+                <li data-name="Stage#removeFromParent"><a href="Stage.html#removeFromParent">removeFromParent</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="View">
             <span class="title">
                 <a href="View.html">View</a>
@@ -81,6 +110,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="View#_render"><a href="View.html#_render">_render</a></li>
             
                 <li data-name="View#addChild"><a href="View.html#addChild">addChild</a></li>
             
@@ -107,6 +138,8 @@
 <header>
     <h2>View
     </h2>
+    
+        <div class="class-description">View 渲染基类</div>
     
 </header>  
 
@@ -142,6 +175,333 @@
     
     
 <dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">x坐标</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">y坐标</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>z</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">z坐标</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pivotX</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">x中心点</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pivotY</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">y中心点</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pivotZ</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">z中心点</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scaleX</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">x缩放</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scaleY</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">y缩放</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scaleZ</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">z缩放</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>alpha</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">透明度 0~1</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">是否显示</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">父容器</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>children</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">子容器</td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
     
         
     
@@ -206,353 +566,7 @@
                 
                 
                 
-                
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>x</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>y</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>z</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>pivotX</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>pivotY</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>pivotZ</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>scaleX</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>scaleY</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>scaleZ</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>alpha</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>visible</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>parent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>children</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+                传入属性</td>
         </tr>
 	
 	
@@ -595,14 +609,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="addChild">
+        <h4 class="name" id="_render">
             
-            addChild<span class="signature">(child)</span>
+            _render<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="View.js.html#line45">source code</a>
+            <a href="View.js.html#line92">source code</a>
         </div>
         
     </div>
@@ -611,6 +625,81 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        子类自己实现渲染方法
+    </div>
+    
+
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="addChild">
+            
+            addChild<span class="signature">(child)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="View.js.html#line48">source code</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        添加对象
+    </div>
     
 
     
@@ -715,7 +804,7 @@
     
         
         <div class="tag-source">
-            <a href="View.js.html#line51">source code</a>
+            <a href="View.js.html#line59">source code</a>
         </div>
         
     </div>
@@ -724,6 +813,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        移除对象
+    </div>
     
 
     
@@ -828,7 +921,7 @@
     
         
         <div class="tag-source">
-            <a href="View.js.html#line57">source code</a>
+            <a href="View.js.html#line69">source code</a>
         </div>
         
     </div>
@@ -837,6 +930,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        从父容器中移除
+    </div>
     
 
     

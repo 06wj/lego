@@ -6,6 +6,8 @@ var jsdoc = require('gulp-jsdoc');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
 var rimraf = require('gulp-rimraf');
+var through2 = require('through2');
+
 
 var config = {
     src: [
@@ -38,14 +40,74 @@ var config = {
     }
 };
 
+var modify = function() {
+    return through2.obj(function(file, encoding, done) {
+        var findMetadata = function(code){
+            var matches = [], result;
+            var module, moduleName, requireModules = [], requireClasses = [];
+            var moduleRegExp = /(\*[\s]?@module[\s]+)([\S]+)\s/;
+            var requireRegExp = /(\*[\s]?@requires[\s]+)([\S]+)\s/ig;
+            var classRegExp = /\/?(\w+)$/;
+
+            //module info
+            if((result = moduleRegExp.exec(code)) != null){
+                matches.push(result[0]);
+                module = result[2];
+                moduleName = module.match(classRegExp)[1];
+            }
+
+            //require module info
+            while((result = requireRegExp.exec(code)) != null){
+                matches.push(result[0]);
+                var mod = result[2];
+                var clazz = mod.match(classRegExp)[1];
+                requireModules.push(mod);
+                requireClasses.push(clazz);
+            }
+
+            return {
+                matches: matches,
+                module: module,
+                moduleName: moduleName,
+                requireModules: requireModules,
+                requireClasses: requireClasses
+            };
+        };
+
+
+        var getModule = function(module){
+            if(module.indexOf("/") > -1){
+                return module.replace(/\//g, ".");
+            }
+            else{
+                return "window." + module;
+            }
+        };
+
+        var content = String(file.contents);
+        var meta = findMetadata(content);
+
+        var start = "";
+        meta.requireModules.forEach(function(module, i){
+            start += "\nvar " + meta.requireClasses[i] + " = " + getModule(module) + ";\n";
+        });
+
+        var end = "\n" + getModule(meta.module) + " = " + meta.moduleName + ";\n";
+
+        file.contents = new Buffer(start + content + end);
+        this.push(file);
+        done();
+    });
+};
+
 var pack = function (type) {
     var data = config[type];
     return gulp.src(config.src)
+        .pipe(modify())
         .pipe(insert.wrap(data.start, data.end))
         .pipe(concat(data.filename))
         .pipe(gulp.dest(data.dir))
-        .pipe(gulp.dest(data.dir))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(rename({ suffix: ".min" }))
         .pipe(gulp.dest(data.dir));
 };

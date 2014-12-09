@@ -1,4 +1,5 @@
 /**
+ * @module lego 
  * @namespace lego
  * @author 06wj
 */
@@ -28,5 +29,3 @@ var lego = {
 		}
 	}
 };
-
-window.lego = lego;
