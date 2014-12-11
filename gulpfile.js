@@ -12,6 +12,8 @@ var through2 = require('through2');
 var config = {
     src: [
         "src/Lego.js",
+        "src/Vector3.js",
+        "src/Matrix4.js",
         "src/View.js",
         "src/Stage.js"
     ],

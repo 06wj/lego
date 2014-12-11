@@ -1,5 +1,5 @@
 /**
- * @module lego 
+ * @module lego 乐高
  * @namespace lego
  * @author 06wj
 */
