@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<style>
+		canvas{
+			border:solid 1px #000;
+		}
+	</style>
+</head>
+<body>
+	<script src="../build/lego.js"></script>
+	<script>
+	var canvasWidth = 550, canvasHeight = 400;
+	var stage = new lego.Stage({
+		width:canvasWidth,
+		height:canvasHeight
+	});
+
+	var g = new lego.Group({
+		pivotX:0,
+		pivotY:40,
+		scaleY:1,
+		pivotZ:0,
+		// rotationZ:330,
+		points:[
+			{x:0, y:0, z:0},
+			{x:100, y:40, z:0},
+			{x:0, y:80, z:0}
+		],
+		onUpdate :function(){
+			this.rotationZ ++;
+			this.rotationX ++;
+			this.rotationY ++;
+		}
+	});
+	stage.addChild(g);
+
+		stage.start();
+
+	</script>
+</body>
+</html>

@@ -2,12 +2,17 @@
  * @class View 渲染基类
  * @module lego/View
  * @requires lego
+ * @requires lego/Matrix4
+ * @requires lego/Vector3
  * @property {Number} x x坐标
  * @property {Number} y y坐标
  * @property {Number} z z坐标
  * @property {Number} pivotX x中心点
  * @property {Number} pivotY y中心点
  * @property {Number} pivotZ z中心点
+ * @property {Number} rotationX 绕x轴旋转
+ * @property {Number} rotationY 绕y轴旋转
+ * @property {Number} rotationZ 绕z轴旋转
  * @property {Number} scaleX x缩放
  * @property {Number} scaleY y缩放
  * @property {Number} scaleZ z缩放
@@ -31,6 +36,12 @@ var View = function(cfg){
 	this.scaleY = 1;
 	this.scaleZ = 1;
 
+	this.rotationX = 0;
+	this.rotationY = 0;
+	this.rotationZ = 0;
+
+	this.mat = Matrix4.create();
+
 	this.alpha = 1;
 	this.visible = true;
 	this.parent = null;
@@ -39,8 +50,7 @@ var View = function(cfg){
 	lego.merge(this, cfg);
 };
 
-View.prototype = {
-	constructor:View,
+lego.merge(View.prototype, {
 	/**
 	 * 添加对象
 	 * @param {View} child
@@ -74,22 +84,59 @@ View.prototype = {
 	},
 	/*
 	 * 渲染
+	 * @param {Number} ctx 绘图上下文
 	 * @param {Number} dt 时间间隔
 	**/
-	render:function(dt){
+	render:function(ctx, dt){
 		var children = this.children;
 		this.onUpdate && this.onUpdate(dt);
-		this._render();
 
 		for(var i = 0, l = children.length;i < l;i ++){
 			var child = children[i];
-			child.render(dt);
+			child.render(ctx, dt);
 		}
+
+		ctx.save();
+		this._transform(ctx);
+		this._draw(ctx);
+		ctx.restore();
+	},
+	getVector:function(){
+		var finalMat = Matrix4.create();
+		var parent = this.parent;
+		while(parent){
+			var mat = Matrix4.create();
+			// mat[13] -= parent.pivotY;
+			// mat[12] -= parent.pivotX;
+			Matrix4.translate(mat, parent.x, parent.y, parent.z);
+			Matrix4.rotate(mat, parent.rotationY, 0, 1, 0);
+			Matrix4.rotate(mat, parent.rotationX, 1, 0, 0);
+			Matrix4.rotate(mat, parent.rotationZ, 0, 0, 1);
+			Matrix4.scale(mat, parent.scaleX, parent.scaleY, parent.scaleZ);
+			Matrix4.translate(mat, -parent.pivotX, -parent.pivotY, parent.z);
+
+
+			Matrix4.concat(finalMat, mat);
+
+			parent = parent.parent;
+		}
+
+		window.finalMat = finalMat;
+		return Matrix4.multiplyVector3(finalMat, [this.x, this.y, this.z]);
+	},
+	_transform:function(ctx){
+		var vec = this.getVector();
+		var pos = lego.to2d({
+			x:vec[0],
+			y:vec[1],
+			z:vec[2]
+		});
+		this._pos = pos;
 	},
 	/**
      * 子类自己实现渲染方法
 	*/
-	_render:function(){
+	_draw:function(ctx){
 
 	}
-};
+});

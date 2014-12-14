@@ -44,9 +44,9 @@ var Matrix4 = {
 	multiplyVector3: function(mat, vec) {
 		var result = Vector3.create();
 
-		result[0] = vec[0] * mat[0] + vec[1] * mat[4] + vec[2] * mat[8] + mat[11];
-		result[1] = vec[0] * mat[1] + vec[1] * mat[5] + vec[2] * mat[9] + mat[12];
-		result[2] = vec[0] * mat[2] + vec[1] * mat[6] + vec[2] * mat[10] + mat[13];
+		result[0] = vec[0] * mat[0] + vec[1] * mat[4] + vec[2] * mat[8] + mat[12];
+		result[1] = vec[0] * mat[1] + vec[1] * mat[5] + vec[2] * mat[9] + mat[13];
+		result[2] = vec[0] * mat[2] + vec[1] * mat[6] + vec[2] * mat[10] + mat[14];
 
 		return result;
 	},
@@ -240,8 +240,8 @@ var Matrix4 = {
 		}
 	},
 	rotate: function(mat, angle, x, y, z) {
-		var m = this().create();
-		this.setRotate(angle, x, y, z);
+		var m = this.create();
+		this.setRotate(m, angle, x, y, z);
 		this.concat(mat, m);
 	}
 };

@@ -16,6 +16,17 @@
         "url":"https://github.com/06wj/lego/issues"
     },
     "main":"gulpfile.js",
+    "sources":{
+        "src":"src",
+        "files":[
+            "Lego.js",
+            "Vector3.js",
+            "Matrix4.js",
+            "View.js",
+            "Stage.js",
+            "Group.js"
+        ]
+    },
     "devDependencies":{
         "gulp": "~3.8.7",
         "gulp-concat": "~2.3.4",

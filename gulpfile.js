@@ -9,14 +9,13 @@ var rimraf = require('gulp-rimraf');
 var through2 = require('through2');
 
 
+var pkg = require('./package.json');
+var sources = pkg.sources.files.map(function(file){
+    return pkg.sources.src + "/" + file;
+});
+
 var config = {
-    src: [
-        "src/Lego.js",
-        "src/Vector3.js",
-        "src/Matrix4.js",
-        "src/View.js",
-        "src/Stage.js"
-    ],
+    src:sources,
     standalone: {
         dir: 'build/',
         filename: 'lego.js',
