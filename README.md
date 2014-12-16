@@ -1,10 +1,10 @@
 # lego
 
-render 3d object
+render 3d object use canvas2d
 
 ## doc
-* [index](http://o6wj.github.io/lego/doc/index.html)
+* [index](http://06wj.github.io/lego/doc/index.html)
 
 ## demo
-* [demo](http://o6wj.github.io/lego/demo/demo.html)
-* [DataParser](http://o6wj.github.io/lego/demo/DataParser.html)
+* [demo](http://06wj.github.io/lego/demo/demo.html)
+* [DataParser](http://06wj.github.io/lego/demo/DataParser.html)
