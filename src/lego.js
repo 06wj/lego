@@ -32,7 +32,7 @@ var lego = {
 		}
 	},
 	to2d:function(obj){
-    	var viewDistance = 1000;
+    	var viewDistance = 2000;
     	var perspective = viewDistance / (viewDistance - obj.z);
        
         return {

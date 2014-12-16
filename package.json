@@ -24,7 +24,8 @@
             "Matrix4.js",
             "View.js",
             "Stage.js",
-            "Group.js"
+            "Group.js",
+            "Cube.js"
         ]
     },
     "devDependencies":{

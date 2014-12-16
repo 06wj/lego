@@ -33,7 +33,7 @@ var lego = {
 		}
 	},
 	to2d:function(obj){
-    	var viewDistance = 1000;
+    	var viewDistance = 2000;
     	var perspective = viewDistance / (viewDistance - obj.z);
        
         return {
@@ -429,17 +429,16 @@ lego.merge(View.prototype, {
 		var parent = this.parent;
 		while(parent){
 			var mat = Matrix4.create();
-			// mat[13] -= parent.pivotY;
-			// mat[12] -= parent.pivotX;
+			//TODO:矩阵运算合一
 			Matrix4.translate(mat, parent.x, parent.y, parent.z);
-			Matrix4.rotate(mat, parent.rotationY, 0, 1, 0);
 			Matrix4.rotate(mat, parent.rotationX, 1, 0, 0);
+			Matrix4.rotate(mat, parent.rotationY, 0, 1, 0);
 			Matrix4.rotate(mat, parent.rotationZ, 0, 0, 1);
 			Matrix4.scale(mat, parent.scaleX, parent.scaleY, parent.scaleZ);
-			Matrix4.translate(mat, -parent.pivotX, -parent.pivotY, parent.z);
+			Matrix4.translate(mat, -parent.pivotX, -parent.pivotY, -parent.pivotZ);
 
-
-			Matrix4.concat(finalMat, mat);
+			Matrix4.concat(mat, finalMat);
+			finalMat = mat;
 
 			parent = parent.parent;
 		}
@@ -570,7 +569,7 @@ lego.extend(Group, View, {
 			this.views.push(v);
 			this.addChild(v);
 			v._draw = function(ctx){
-				var r = 10;
+				var r = 2;
 				ctx.beginPath();
 				ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
 				ctx.stroke();
@@ -588,12 +587,73 @@ lego.extend(Group, View, {
 		};
 		ctx.moveTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
 		for(var i = 1, l = this.views.length;i < l;i ++){
-			ctx.lineTo(this.views[i]._pos.x - offset.x, this.views[i]._pos.y - offset.y);
+			var v = this.views[i];
+			if(v.move){
+				ctx.moveTo(v._pos.x - offset.x, v._pos.y - offset.y);
+			}
+			else{
+				ctx.lineTo(v._pos.x - offset.x, v._pos.y - offset.y);
+			}
 		}
 		ctx.lineTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
 		ctx.stroke();
 	}
 });
 lego.Group = Group;
+
+})(this);
+
+(function(window, undefined){
+
+var lego = window.lego;
+
+var Group = lego.Group;
+/**
+ * @class Cube
+ * @module lego/Cube
+ * @requires lego
+ * @requires lego/Group
+*/
+var Cube = function(cfg){
+	this.w = 0;
+	this.h = 0;
+	this.l = 0;
+	Group.call(this, cfg);
+};
+
+lego.extend(Cube, Group, {
+	init:function(){
+		var w = this.w;
+		var h = this.h;
+		var l = this.l;
+
+		this.points = [
+			{x:0, y:0, z:0},
+			{x:w, y:0, z:0},
+			{x:w, y:h, z:0},
+			{x:0, y:h, z:0},
+
+			{x:0, y:0, z:0},
+			{x:0, y:0, z:l},
+			{x:0, y:h, z:l},
+			{x:0, y:h, z:0},
+
+			{x:w, y:0, z:0, move:1},
+			{x:w, y:0, z:l},
+			{x:w, y:h, z:l},
+			{x:w, y:h, z:0},
+
+			{x:0, y:0, z:l, move:1},
+			{x:w, y:0, z:l},
+
+			{x:0, y:h, z:l, move:1},
+			{x:w, y:h, z:l},
+
+			{x:0, y:0, z:0, move:1}
+		];
+		Group.prototype.init.call(this);
+	}
+});
+lego.Cube = Cube;
 
 })(this);

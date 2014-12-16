@@ -106,17 +106,16 @@ lego.merge(View.prototype, {
 		var parent = this.parent;
 		while(parent){
 			var mat = Matrix4.create();
-			// mat[13] -= parent.pivotY;
-			// mat[12] -= parent.pivotX;
+			//TODO:矩阵运算合一
 			Matrix4.translate(mat, parent.x, parent.y, parent.z);
-			Matrix4.rotate(mat, parent.rotationY, 0, 1, 0);
 			Matrix4.rotate(mat, parent.rotationX, 1, 0, 0);
+			Matrix4.rotate(mat, parent.rotationY, 0, 1, 0);
 			Matrix4.rotate(mat, parent.rotationZ, 0, 0, 1);
 			Matrix4.scale(mat, parent.scaleX, parent.scaleY, parent.scaleZ);
-			Matrix4.translate(mat, -parent.pivotX, -parent.pivotY, parent.z);
+			Matrix4.translate(mat, -parent.pivotX, -parent.pivotY, -parent.pivotZ);
 
-
-			Matrix4.concat(finalMat, mat);
+			Matrix4.concat(mat, finalMat);
+			finalMat = mat;
 
 			parent = parent.parent;
 		}

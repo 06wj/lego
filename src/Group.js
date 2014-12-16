@@ -18,7 +18,7 @@ lego.extend(Group, View, {
 			this.views.push(v);
 			this.addChild(v);
 			v._draw = function(ctx){
-				var r = 10;
+				var r = 2;
 				ctx.beginPath();
 				ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
 				ctx.stroke();
@@ -36,7 +36,13 @@ lego.extend(Group, View, {
 		};
 		ctx.moveTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
 		for(var i = 1, l = this.views.length;i < l;i ++){
-			ctx.lineTo(this.views[i]._pos.x - offset.x, this.views[i]._pos.y - offset.y);
+			var v = this.views[i];
+			if(v.move){
+				ctx.moveTo(v._pos.x - offset.x, v._pos.y - offset.y);
+			}
+			else{
+				ctx.lineTo(v._pos.x - offset.x, v._pos.y - offset.y);
+			}
 		}
 		ctx.lineTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
 		ctx.stroke();

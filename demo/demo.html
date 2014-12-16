@@ -18,26 +18,90 @@
 		height:canvasHeight
 	});
 
+
 	var g = new lego.Group({
+		y:0,
+		x:0,
+		z:0,
+		v:.01,
 		pivotX:0,
-		pivotY:40,
-		scaleY:1,
+		pivotY:0,
 		pivotZ:0,
-		// rotationZ:330,
 		points:[
 			{x:0, y:0, z:0},
-			{x:100, y:40, z:0},
+			{x:-100, y:40, z:30},
 			{x:0, y:80, z:0}
 		],
 		onUpdate :function(){
-			this.rotationZ ++;
-			this.rotationX ++;
-			this.rotationY ++;
+			this.scaleX -=this.v;
+			if(this.scaleX < 0){
+				this.scaleX = 0;
+				this.v *= -1;
+			}
+			else if(this.scaleX > 2){
+				this.scaleX = 2;
+				this.v *= -1;
+			}
 		}
 	});
-	stage.addChild(g);
 
-		stage.start();
+	var g1 = new lego.Group({
+		x:-100,
+		y:40,
+		z:30,
+		points:[
+			{x:0, y:-20, z:0},
+			{x:0, y:30, z:0}
+		],
+		onUpdate :function(){
+			this.rotationX +=4;
+		}
+	});
+	g.addChild(g1);
+
+	var cube = new lego.Cube({
+		pivotX:50,
+		pivotY:50,
+		pivotZ:50,
+		x:0,
+		y:0,
+		w:100,
+		h:100,
+		l:100,
+		rotationZ:45,
+		rotationX:45,
+		rotationY:45,
+		onUpdate:function(){
+			this.rotationX ++;
+			this.rotationY += .1;
+		}
+	});
+
+	var cube2 = new lego.Cube({
+		pivotX:10,
+		pivotY:30,
+		pivotZ:10,
+		x:50,
+		y:50,
+		z:50,
+		w:20,
+		h:60,
+		l:20,
+		rotationY:45,
+		onUpdate:function(){
+			this.rotationY +=5;
+		}
+	});
+	stage.addChild(cube);
+
+	cube.addChild(cube2);
+	cube.addChild(g);
+
+	stage.onUpdate = function(){
+		this.rotationX+= 0;
+	}
+
+	stage.start();
 
 	</script>
 </body>
