@@ -1,5 +1,6 @@
 (function(window, undefined){
 /**
+ * lego 工具类
  * @module lego 乐高
  * @namespace lego
  * @author 06wj
@@ -33,7 +34,7 @@ var lego = {
 		}
 	},
 	to2d:function(obj){
-    	var viewDistance = 2000;
+    	var viewDistance = 1000;
     	var perspective = viewDistance / (viewDistance - obj.z);
        
         return {
@@ -52,6 +53,10 @@ window.lego = lego;
  * @namespace lego.Vector3
 */
 var Vector3 = {
+	/**
+     * @memberOf lego.Vector3
+     *
+	*/
 	create:function(){
 		return [0, 0, 0];
 	}
@@ -65,25 +70,41 @@ lego.Vector3 = Vector3;
 var Vector3 = lego.Vector3;
 var identityMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 /**
- * @namespace lego.Matrix4
+ * 四维矩阵
  * @module lego/Matrix4
+ * @namespace lego.Matrix4
  * @requires lego/Vector3
  */
 var Matrix4 = {
+	/**
+     * @memberOf lego.Matrix4
+	*/
 	create: function() {
 		return identityMatrix.concat();
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	clone: function(mat) {
 		return mat.concat();
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setIdentity: function(mat) {
 		this.set(mat, identityMatrix);
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	set: function(mat0, mat1) {
 		for (var i = 0; i < 16; i++) {
 			mat0[i] = mat1[i];
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	concat: function(mat0, mat1) {
 		var i, e, a, b, ai0, ai1, ai2, ai3;
 
@@ -106,6 +127,9 @@ var Matrix4 = {
 			e[i + 12] = ai0 * b[12] + ai1 * b[13] + ai2 * b[14] + ai3 * b[15];
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	multiplyVector3: function(mat, vec) {
 		var result = Vector3.create();
 
@@ -115,6 +139,9 @@ var Matrix4 = {
 
 		return result;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	transpose: function(mat) {
 		var t;
 		t = mat[1];
@@ -136,6 +163,9 @@ var Matrix4 = {
 		mat[11] = mat[14];
 		mat[14] = t;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setScale:function(mat, x, y, z) {
 		mat[0] = x;
 		mat[4] = 0;
@@ -154,6 +184,9 @@ var Matrix4 = {
 		mat[11] = 0;
 		mat[15] = 1;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	scale:function(mat, x, y, z) {
 		mat[0] *= x;
 		mat[4] *= y;
@@ -168,6 +201,9 @@ var Matrix4 = {
 		mat[7] *= y;
 		mat[11] *= z;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setTranslate: function(mat, x, y, z) {
 		mat[0] = 1;
 		mat[4] = 0;
@@ -186,12 +222,18 @@ var Matrix4 = {
 		mat[11] = 0;
 		mat[15] = 1;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	translate: function(mat, x, y, z) {
 		mat[12] += mat[0] * x + mat[4] * y + mat[8] * z;
 		mat[13] += mat[1] * x + mat[5] * y + mat[9] * z;
 		mat[14] += mat[2] * x + mat[6] * y + mat[10] * z;
 		mat[15] += mat[3] * x + mat[7] * y + mat[11] * z;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setRotate: function(mat, angle, x, y, z) {
 		var e, s, c, len, rlen, nc, xy, yz, zx, xs, ys, zs;
 
@@ -304,6 +346,9 @@ var Matrix4 = {
 			mat[15] = 1;
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	rotate: function(mat, angle, x, y, z) {
 		var m = this.create();
 		this.setRotate(m, angle, x, y, z);
@@ -324,6 +369,7 @@ var Vector3 = lego.Vector3;
 /** 
  * @class View 渲染基类
  * @module lego/View
+ * @memberof lego
  * @requires lego
  * @requires lego/Matrix4
  * @requires lego/Vector3
@@ -474,21 +520,29 @@ var View = lego.View;
 /**
  * @class Stage 舞台类
  * @module lego/Stage
+ * @memberof lego
  * @requires lego
  * @requires lego/View
- * @extends View
+ * @property {Canvas} canvas
+ * @property {CavansContext2d} ctx
+ * @property {Number} _lastTime 上次执行时间
+ * @extends lego.View
  * @constructor Stage 
 */
 var Stage = function(cfg){
 	this.canvas = null;
 	this.ctx = null;
+	this._lastTime = 0;
 
 	View.call(this, cfg);
 	this._init();
 };
 
 lego.extend(Stage, View, {
-	_lastTime:0,
+	/**
+	 * @class Stage
+     * @function 
+	*/
 	_init:function(){
 		if(!this.canvas){
 			this.canvas = document.createElement("canvas");
@@ -497,15 +551,13 @@ lego.extend(Stage, View, {
 		this.ctx = this.canvas.getContext("2d");
 		this.resize(this.width, this.height);
 	},
-	_tick:function(){
+	/**
+     * 
+	*/
+	_tick:function _tick(){
 		var nowTime = +new Date();
 		var ctx = this.ctx;
 		ctx.clearRect(0, 0, this.width, this.height);
-		ctx.moveTo(0, 200);
-		ctx.lineTo(550, 200);
-		ctx.moveTo(275, 200);
-		ctx.lineTo(275, 0);
-		ctx.stroke();
 		this.render(ctx, nowTime - this._lastTime);
 		this._lastTime = nowTime;
 	},
@@ -550,29 +602,43 @@ var lego = window.lego;
 
 var View = lego.View;
 /**
- * @class Group 渲染基类
+ * @class Group 集合
  * @module lego/Group
+ * @memberof lego
  * @requires lego
  * @requires lego/View
+ * @property {Array} points 
+ * @property {lego.View} views 
+ * @property {Number} pointSize 点大小 默认为0 
+ * @property {Number} lineWidth 线宽 默认为1
+ * @extends lego.View
+ * @constructor Group
 */
 var Group = function(cfg){
 	this.points = [];
 	this.views = [];
+	this.pointSize = 0;
+	this.lineWidth = 1;
 	View.call(this, cfg);
 
 	this.init();
 };
-lego.extend(Group, View, {
+lego.extend(Group, View, 
+	{
+		
 	init:function(){
+		var that = this;
 		for(var i = 0, l = this.points.length;i < l;i ++){
 			var v = new View(this.points[i]);
 			this.views.push(v);
 			this.addChild(v);
-			v._draw = function(ctx){
-				var r = 2;
-				ctx.beginPath();
-				ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
-				ctx.stroke();
+			if(that.pointSize){
+				v._draw = function(ctx){
+					var r = that.pointSize;
+					ctx.beginPath();
+					ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
+					ctx.stroke();
+				}
 			}
 		}
 	},
@@ -596,6 +662,7 @@ lego.extend(Group, View, {
 			}
 		}
 		ctx.lineTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
+		ctx.lineWidth = this.lineWidth;
 		ctx.stroke();
 	}
 });
@@ -609,10 +676,16 @@ var lego = window.lego;
 
 var Group = lego.Group;
 /**
- * @class Cube
+ * @class Cube 立方体
  * @module lego/Cube
+ * @memberof lego
  * @requires lego
  * @requires lego/Group
+ * @property {Number} w 宽
+ * @property {Number} h 高
+ * @property {Number} l 长
+ * @extends lego.Group
+ * @constructor Cube 
 */
 var Cube = function(cfg){
 	this.w = 0;
@@ -655,5 +728,93 @@ lego.extend(Cube, Group, {
 	}
 });
 lego.Cube = Cube;
+
+})(this);
+
+(function(window, undefined){
+
+var lego = window.lego;
+
+var Group = lego.Group;
+/**
+ * 解析3d obj文件
+ * @module lego/DataParser 
+ * @namespace lego.DataParser
+ * @requires lego
+ * @requires lego/Group
+*/
+var DataParser = {
+	/**
+     * @memberOf lego.DataParser
+     * @param {String} url 加载obj文件网址
+     * @param {Function} callback
+     * @param {lego.Group} callback.group 返回根据obj文件生成的group
+	*/
+	load:function(url, callback){
+		var that = this;
+		var xhr = new XMLHttpRequest;
+		xhr.open("GET",url,true);
+		xhr.onreadystatechange = function(e){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				callback(that.parse(xhr.response));
+			}
+		};
+		xhr.send();
+	},
+	/**
+     * @memberOf lego.DataParser
+     * @param {String} str obj文件文本内容
+     * @returns {lego.Group} group 返回根据obj文件生成的group
+	*/
+	parse:function(str){
+		var points = [];
+		var vArr = str.match(/[\r\n](v\s[\S\s]+?)\send\s/g);
+
+		vArr.forEach(function(v){
+			var isSurface = v.indexOf("surf ") > -1;
+			v = v.replace(/cstype[\s\S]+end\s/, '').replace(/^\s/, "").replace(/v\s/g, "[").replace(/[\r\n]+/g, "],").replace(/[\s]/g, ",");
+
+			v = "[" + v.slice(0, -1) + "]";
+			v = JSON.parse(v);
+			if(isSurface){
+				var last = v[3];
+				v[3] = v[2];
+				v[2] = last;
+			}
+			points.push(v);
+		});
+		
+		var res = [];
+		for(var i = 0, l = points.length;i < l;i ++){
+			var ps = points[i];
+			for(var j = 0, jl = ps.length;j < jl;j++){
+				var p = {
+					x:ps[j][0],
+					y:ps[j][1],
+					z:ps[j][2],
+				};
+				res.push(p);
+
+				if(j == 0){
+					p.move = 1;
+				}
+
+				if(j == jl-1){
+					res.push({
+						x:ps[0][0],
+						y:ps[0][1],
+						z:ps[0][2],
+					})
+				}
+			}
+		}
+		res.push(res[0]);
+
+		return new Group({
+			points:res
+		});
+	}
+};
+lego.DataParser = DataParser;
 
 })(this);

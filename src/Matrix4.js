@@ -1,24 +1,40 @@
 var identityMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 /**
- * @namespace lego.Matrix4
+ * 四维矩阵
  * @module lego/Matrix4
+ * @namespace lego.Matrix4
  * @requires lego/Vector3
  */
 var Matrix4 = {
+	/**
+     * @memberOf lego.Matrix4
+	*/
 	create: function() {
 		return identityMatrix.concat();
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	clone: function(mat) {
 		return mat.concat();
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setIdentity: function(mat) {
 		this.set(mat, identityMatrix);
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	set: function(mat0, mat1) {
 		for (var i = 0; i < 16; i++) {
 			mat0[i] = mat1[i];
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	concat: function(mat0, mat1) {
 		var i, e, a, b, ai0, ai1, ai2, ai3;
 
@@ -41,6 +57,9 @@ var Matrix4 = {
 			e[i + 12] = ai0 * b[12] + ai1 * b[13] + ai2 * b[14] + ai3 * b[15];
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	multiplyVector3: function(mat, vec) {
 		var result = Vector3.create();
 
@@ -50,6 +69,9 @@ var Matrix4 = {
 
 		return result;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	transpose: function(mat) {
 		var t;
 		t = mat[1];
@@ -71,6 +93,9 @@ var Matrix4 = {
 		mat[11] = mat[14];
 		mat[14] = t;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setScale:function(mat, x, y, z) {
 		mat[0] = x;
 		mat[4] = 0;
@@ -89,6 +114,9 @@ var Matrix4 = {
 		mat[11] = 0;
 		mat[15] = 1;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	scale:function(mat, x, y, z) {
 		mat[0] *= x;
 		mat[4] *= y;
@@ -103,6 +131,9 @@ var Matrix4 = {
 		mat[7] *= y;
 		mat[11] *= z;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setTranslate: function(mat, x, y, z) {
 		mat[0] = 1;
 		mat[4] = 0;
@@ -121,12 +152,18 @@ var Matrix4 = {
 		mat[11] = 0;
 		mat[15] = 1;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	translate: function(mat, x, y, z) {
 		mat[12] += mat[0] * x + mat[4] * y + mat[8] * z;
 		mat[13] += mat[1] * x + mat[5] * y + mat[9] * z;
 		mat[14] += mat[2] * x + mat[6] * y + mat[10] * z;
 		mat[15] += mat[3] * x + mat[7] * y + mat[11] * z;
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	setRotate: function(mat, angle, x, y, z) {
 		var e, s, c, len, rlen, nc, xy, yz, zx, xs, ys, zs;
 
@@ -239,6 +276,9 @@ var Matrix4 = {
 			mat[15] = 1;
 		}
 	},
+	/**
+     *@memberOf lego.Matrix4
+	*/
 	rotate: function(mat, angle, x, y, z) {
 		var m = this.create();
 		this.setRotate(m, angle, x, y, z);

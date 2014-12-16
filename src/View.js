@@ -1,6 +1,7 @@
 /** 
  * @class View 渲染基类
  * @module lego/View
+ * @memberof lego
  * @requires lego
  * @requires lego/Matrix4
  * @requires lego/Vector3

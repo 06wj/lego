@@ -25,7 +25,8 @@
             "View.js",
             "Stage.js",
             "Group.js",
-            "Cube.js"
+            "Cube.js",
+            "DataParser.js"
         ]
     },
     "devDependencies":{

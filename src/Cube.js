@@ -1,8 +1,14 @@
 /**
- * @class Cube
+ * @class Cube 立方体
  * @module lego/Cube
+ * @memberof lego
  * @requires lego
  * @requires lego/Group
+ * @property {Number} w 宽
+ * @property {Number} h 高
+ * @property {Number} l 长
+ * @extends lego.Group
+ * @constructor Cube 
 */
 var Cube = function(cfg){
 	this.w = 0;

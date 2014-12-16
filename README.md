@@ -6,4 +6,5 @@ render 3d object
 * [index](http://o6wj.github.io/lego/doc/index.html)
 
 ## demo
-* [example](http://o6wj.github.io/lego/demo/2d.html)
+* [demo](http://o6wj.github.io/lego/demo/demo.html)
+* [DataParser](http://o6wj.github.io/lego/demo/DataParser.html)

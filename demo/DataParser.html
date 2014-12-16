@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DataParser</title>
+	<style>
+	    body, div{
+	    	margin:0;
+	    	padding:0;
+	    }
+
+		canvas{
+			margin:20px auto;
+			display: block;
+			background:url(assets/bg.png);
+		}
+	</style>
+</head>
+<body>
+	<script src="../build/lego.js"></script>
+	<script>
+	var canvasWidth = 550, canvasHeight = 400;
+	var stage = new lego.Stage({
+		width:canvasWidth,
+		height:canvasHeight
+	});
+	stage.start();
+
+	var vx = .25, vy = .05;
+	
+	lego.DataParser.load("./assets/plane.obj", function(g){
+		g.onUpdate = function(){
+			this.rotationX += vx;
+			this.rotationY += vy;
+		}
+		g.lineWidth = .3;
+		g.scaleX = g.scaleY = g.scaleZ = 3;
+		stage.addChild(g);
+		bindMouseEvent();
+	});
+
+	function bindMouseEvent(){
+		document.body.querySelector("canvas").onmousemove = function(e){
+			var x = e.layerX;
+			var y = e.layerY;
+			vy = (canvasWidth * .5 - x)/canvasWidth * 2;
+			vx = (canvasHeight * .5 - y)/canvasHeight * 2;
+		}
+	}
+
+	</script>
+</body>
+</html>

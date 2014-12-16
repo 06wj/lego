@@ -139,7 +139,7 @@ gulp.task('doc', ['lint', 'build'], function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(config.src, ['build']);
+    gulp.watch(config.src, ['default']);
 });
 
 gulp.task('build', ['standalone']);

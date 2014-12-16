@@ -4,8 +4,15 @@
 	<meta charset="UTF-8">
 	<title>demo</title>
 	<style>
+	    body, div{
+	    	margin:0;
+	    	padding:0;
+	    }
+
 		canvas{
-			border:solid 1px #000;
+			margin:20px auto;
+			display: block;
+			background:url(assets/bg.png);
 		}
 	</style>
 </head>
@@ -20,46 +27,50 @@
 
 
 	var g = new lego.Group({
-		y:0,
+		pointSize:3,
+		y:50,
 		x:0,
-		z:0,
-		v:.01,
+		z:50,
+		v:.001,
 		pivotX:0,
-		pivotY:0,
-		pivotZ:0,
+		pivotY:25,
+		pivotZ:25,
 		points:[
 			{x:0, y:0, z:0},
-			{x:-100, y:40, z:30},
-			{x:0, y:80, z:0}
+			{x:-50, y:25, z:25},
+			{x:0, y:50, z:0},
+
+			{x:0, y:50, z:50, move:1},
+			{x:-50, y:25, z:25},
+			{x:0, y:0, z:50},
+			{x:0, y:0, z:0},
+			{x:0, y:50, z:0},
+			{x:0, y:50, z:50},
+			{x:0, y:0, z:50}
+
 		],
-		onUpdate :function(){
-			this.scaleX -=this.v;
-			if(this.scaleX < 0){
-				this.scaleX = 0;
-				this.v *= -1;
-			}
-			else if(this.scaleX > 2){
-				this.scaleX = 2;
-				this.v *= -1;
-			}
+		onUpdate:function(){
+			this.rotationX ++
 		}
 	});
 
 	var g1 = new lego.Group({
-		x:-100,
-		y:40,
-		z:30,
+		pointSize:3,
+		x:-50,
+		y:25,
+		z:25,
 		points:[
 			{x:0, y:-20, z:0},
-			{x:0, y:30, z:0}
+			{x:0, y:50, z:0}
 		],
 		onUpdate :function(){
-			this.rotationX +=4;
+			this.rotationX -=6;
 		}
 	});
 	g.addChild(g1);
 
 	var cube = new lego.Cube({
+		pointSize:3,
 		pivotX:50,
 		pivotY:50,
 		pivotZ:50,
@@ -69,11 +80,9 @@
 		h:100,
 		l:100,
 		rotationZ:45,
-		rotationX:45,
 		rotationY:45,
 		onUpdate:function(){
-			this.rotationX ++;
-			this.rotationY += .1;
+			this.rotationX += .5;
 		}
 	});
 
@@ -87,22 +96,17 @@
 		w:20,
 		h:60,
 		l:20,
-		rotationY:45,
 		onUpdate:function(){
 			this.rotationY +=5;
 		}
 	});
-	stage.addChild(cube);
-
+	
 	cube.addChild(cube2);
 	cube.addChild(g);
-
-	stage.onUpdate = function(){
-		this.rotationX+= 0;
-	}
+	
+	stage.addChild(cube);
 
 	stage.start();
-
 	</script>
 </body>
 </html>

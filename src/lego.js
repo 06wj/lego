@@ -1,4 +1,5 @@
 /**
+ * lego 工具类
  * @module lego 乐高
  * @namespace lego
  * @author 06wj
@@ -32,7 +33,7 @@ var lego = {
 		}
 	},
 	to2d:function(obj){
-    	var viewDistance = 2000;
+    	var viewDistance = 1000;
     	var perspective = viewDistance / (viewDistance - obj.z);
        
         return {

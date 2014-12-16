@@ -1,27 +1,41 @@
 /**
- * @class Group 渲染基类
+ * @class Group 集合
  * @module lego/Group
+ * @memberof lego
  * @requires lego
  * @requires lego/View
+ * @property {Array} points 
+ * @property {lego.View} views 
+ * @property {Number} pointSize 点大小 默认为0 
+ * @property {Number} lineWidth 线宽 默认为1
+ * @extends lego.View
+ * @constructor Group
 */
 var Group = function(cfg){
 	this.points = [];
 	this.views = [];
+	this.pointSize = 0;
+	this.lineWidth = 1;
 	View.call(this, cfg);
 
 	this.init();
 };
-lego.extend(Group, View, {
+lego.extend(Group, View, 
+	{
+		
 	init:function(){
+		var that = this;
 		for(var i = 0, l = this.points.length;i < l;i ++){
 			var v = new View(this.points[i]);
 			this.views.push(v);
 			this.addChild(v);
-			v._draw = function(ctx){
-				var r = 2;
-				ctx.beginPath();
-				ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
-				ctx.stroke();
+			if(that.pointSize){
+				v._draw = function(ctx){
+					var r = that.pointSize;
+					ctx.beginPath();
+					ctx.arc(this._pos.x, this._pos.y, r, 0, Math.PI*2);
+					ctx.stroke();
+				}
 			}
 		}
 	},
@@ -45,6 +59,7 @@ lego.extend(Group, View, {
 			}
 		}
 		ctx.lineTo(this.views[0]._pos.x - offset.x, this.views[0]._pos.y - offset.y);
+		ctx.lineWidth = this.lineWidth;
 		ctx.stroke();
 	}
 });
