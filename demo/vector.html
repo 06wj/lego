@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vector</title>
+	<style>
+		canvas{
+			margin:0 auto;
+			border:1px solid #000;
+			background: #000;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		var canvasWidth = 550;
+		var canvasHeight = 400;
+		var canvas = document.createElement("canvas");
+		var ctx = canvas.getContext("2d");
+		document.body.appendChild(canvas);
+
+		canvas.width = canvasWidth;
+		canvas.height = canvasHeight;
+		var PI2 = Math.PI * 2;
+
+		function Vector3(x, y, z){
+			this.x = x||0;
+			this.y = y||0;
+			this.z = z||0;
+		}
+
+		Vector3.prototype = {
+			constructor:Vector3,
+			zero:function(){
+				this.x = 0;
+				this.y = 0;
+				this.z = 0;
+			},
+			clone:function(){
+				return new Vector3(this.x, this.y, this.z);
+			},
+			plus:function(v, isNew){
+				var me = isNew?this.clone():this;
+				me.x += v.x;
+				me.y += v.y;
+				me.z += v.z;
+				return me;
+			},
+			minus:function(v, isNew){
+				var me = isNew?this.clone():this;
+				me.x -= v.x;
+				me.y -= v.y;
+				me.z -= v.z;
+				return me;
+			},
+			dot:function(v){
+				return this.x*v.x + this.y * v.y + this.z * v.z;
+			},
+			cross:function(v, isNew){
+				var me = isNew?this.clone():this;
+				me.x = me.y * v.z - v.z * me.y;
+				me.y = me.z * v.x - v.x * me.z;
+				me.z = me.x * v.y - v.y * me.x;
+				return me;
+			},
+			scale:function(scale, isNew){
+				var me = isNew?this.clone():this;
+				me.x *= scale;
+				me.y *= scale;
+				me.z *= scale;
+				return me;
+			},
+			getLengthSquared:function(){
+				return this.x * this.x + this.y * this.y + this.z * this.z;
+			},
+			getLength:function(){
+				return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+			},
+			distance:function(v){
+				var n = this.minus(v, true);
+				return n.getLength();
+			},
+			distanceSquared:function(v){
+				var n = this.minus(v, true);
+				return n.getLengthSquared();
+			}
+		};
+
+		function PointMass(position, inverseMass){
+			this.position = position;
+			this.velocity = new Vector3;
+			this.acceleration = new Vector3;
+			this.damping = .98;
+			this.inverseMass = inverseMass;
+		}
+
+		PointMass.prototype = {
+			constructor:PointMass,
+			update:function(){
+				this.velocity.plus(this.acceleration);
+				this.position.plus(this.velocity);
+				this.acceleration.zero();
+				if(this.velocity.getLengthSquared() < .001 * .001){
+					this.velocity.zero();
+				}
+				this.velocity.scale(this.damping);
+				this.damping = .98;
+			},
+			applyForce:function(force){
+				this.acceleration.plus(force);
+			},
+			increaseDamping:function(factor){
+				this.damping *= factor;
+			}
+		};
+
+		function Spring(end1, end2, stiffnes, damping, visible){
+			this.end1 = end1;
+			this.end2 = end2;
+			this.stiffnes = stiffnes;
+			this.damping = damping;
+			this.targetLength = this.end1.position.distance(this.end2.position) * .95;
+			this.visible = visible;
+		}
+
+		Spring.prototype = {
+			constructor:Spring,
+			update:function(){
+				var x = this.end1.position.minus(this.end2.position, true);
+		        var length = x.getLength();
+		        // these springs can only pull, not push
+		        if (length <= this.targetLength){
+		            return;
+		        }
+		 
+		        x.scale((length - this.targetLength)/length);
+		        var dv = this.end2.velocity.minus(this.end1.velocity, true);
+		        var force = dv.scale(this.damping).minus(x.scale(this.stiffnes));
+		 
+		        this.end1.applyForce(force);
+		        this.end2.applyForce(force.scale(-1));
+			}
+		};
+
+		function Rectangle(x, y, w, h){
+			this.width = w;
+			this.height = h;
+			this.x = x;
+			this.y = y;
+
+			this.top = y;
+			this.bottom = y + h;
+			this.left = x;
+			this.right = x + w;
+		}
+
+		function Grid(size, spacing){
+		    var numColumns = size.width / spacing.x + 1;
+		    var numRows = size.height / spacing.y + 1;
+		 
+		    // these fixed points will be used to anchor the grid to fixed positions on the screen
+		 
+		    // create the point masses
+		    var column = 0, row = 0;
+		    var points = [];
+		    var fixedPoints = [];
+		    for (var y = size.top; y <= size.bottom; y += spacing.y){
+		        for (var x = size.left; x <= size.right; x += spacing.x){
+		            points[column] = points[column]||[];
+		            points[column][row] = new PointMass(new Vector3(x, y, 0), 1);
+		            
+		            fixedPoints[column] = fixedPoints[column]||[];
+		            fixedPoints[column][row] = new PointMass(new Vector3(x, y, 0), 0);
+		            column++;
+		        }
+		        row++;
+		        column = 0;
+		    }
+		 	
+		 	var springs  = [];
+		    // link the point masses with springs
+		    for (var y = 0; y < numRows; y++){
+		        for (var x = 0; x < numColumns; x++) { 
+		            if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1){
+		            	// anchor the border of the grid 
+		                springs.push(new Spring(fixedPoints[x][y], points[x][y], 0.1, 0.1, true)); 
+		            }
+		            else if (x % 3 == 0 && y % 3 == 0) {
+						// loosely anchor 1/9th of the point masses 
+		                springs.push(new Spring(fixedPoints[x][y], points[x][y], 0.002, 0.02, false));
+		            }
+		 
+		            var stiffness = 0.28; 
+		            var damping = 0.06; 
+		            if (x > 0){
+		                springs.push(new Spring(points[x - 1][y], points[x][y], stiffness, damping, true));
+		            }
+		            if (y > 0){
+		                springs.push(new Spring(points[x][y - 1], points[x][y], stiffness, damping, true));
+		            }
+		        }
+		    }
+
+		    this.points = points;
+		    this.springs = springs;
+		}
+
+		Grid.prototype = {
+			constructor:Grid,
+			update:function(){
+				this.springs.forEach(function(sp){
+					sp.update();
+
+					if(sp.visible){
+						var pos1 = to2d(sp.end1.position);
+						var pos2 = to2d(sp.end2.position);
+						ctx.moveTo(pos1.x, pos1.y);
+						ctx.lineTo(pos2.x, pos2.y);
+					}
+				});
+
+
+				var r = 1;
+				forEach(this.points, function(p){
+					// p.applyForce(new Vector3(Math.random()-.5, Math.random()-.5, Math.random()-.5).scale(.1))
+					p.update();
+					var pos = to2d(p.position);
+					// ctx.moveTo(pos.x + r, pos.y);
+					// ctx.arc(pos.x, pos.y, r, 0, PI2);
+				});
+			},
+			applyDirectedForce:function(force, position, radius)
+			{
+			    forEach(this.points, function(mass){
+			    	var distPos = position.minus(mass.position, true);
+					var dist2 = distPos.getLengthSquared();
+			    	if(dist2 < radius * radius){
+			    		var scale = 10/(10+position.distance(mass.position));
+			    		mass.applyForce(force.scale(scale, true));
+			    	}
+			    });  
+			},
+			applyImplosiveForce:function(force, position, radius){
+				forEach(this.points, function(mass){
+					var distPos = position.minus(mass.position, true);
+					var dist2 = distPos.getLengthSquared();
+			        if (dist2 < radius * radius){
+			        	var scale = 10 * force / (100 + dist2);
+			            mass.applyForce(distPos.scale(scale));
+			            mass.increaseDamping(0.6);
+			        }
+				});			   
+			},
+			 
+			applyExplosiveForce:function(force, position, radius){
+				forEach(this.points, function(mass){
+					var distPos = position.minus(mass.position, true);
+					var dist2 = distPos.getLengthSquared();
+			        if (dist2 < radius * radius){
+			        	var scale = -100 * force  / (10000 + dist2)
+			            mass.applyForce(distPos.scale(scale));
+			            mass.increaseDamping(0.6);
+			        }
+				});
+			}
+		};
+
+		var w = 550;
+		var h = 400;
+		var grid = new Grid(new Rectangle(0, 0, w, h), {x:11, y:10});
+
+		function forEach(arr, callback){
+			for(var j = arr.length - 1;j >=0;j --){
+				var oa = arr[j];
+				for(var i = oa.length - 1;i >=0;i --){
+					callback(oa[i]);
+				}
+			}
+		}
+
+		var x = 0;
+		var v = 25;
+		function gameloop(){
+			ctx.strokeStyle = "rgba(0, 255, 255, .5)";
+			ctx.lineWidth = .5;
+			ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+			ctx.beginPath();
+			
+			grid.update();
+			ctx.stroke();
+			grid.applyImplosiveForce(20, new Vector3(275 + x, 200, 0), 50);
+			grid.applyImplosiveForce(15, new Vector3(275 + x*.9, 200, 0), 30);
+			grid.applyDirectedForce(new Vector3(0, 0, 500), new Vector3(275 + x*.9, 200, 0), 30);
+			
+			x += v;
+			if(x > canvasWidth*.5 || x < canvasWidth * -.5){
+				v*=-1
+			}
+		}
+
+		function to2d(pos){
+			var factor = (pos.z + 2000) / 2000;
+    		return {
+    			x:(pos.x - canvasWidth*.5) * factor + canvasWidth * .5,
+    			y:(pos.y - canvasHeight*.5) * factor + canvasHeight * .5,
+    		}
+		}
+
+		gameloop();
+		setInterval(gameloop, 1000/60);
+	</script>
+</body>
+</html>

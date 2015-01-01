@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>zmap</title>
+</head>
+<body>
+	<script src="../build/lego.js"></script>
+	<img id="map" src="./assets/map.png" style="display:none">
+	<canvas id="stage"></canvas>
+	<script>
+		window.onload = function(){
+			var mapImg = document.getElementById("map");
+			var canvas = document.getElementById("stage");
+			var cacheCanvas = document.createElement("canvas");
+
+			var ctx = canvas.getContext("2d");
+			var cacheCtx = cacheCanvas.getContext("2d");
+
+			var gameWidth = 550, gameHeight = 400;
+			canvas.width = gameWidth, canvas.height = gameHeight;
+			cacheCanvas.width = mapImg.width, cacheCanvas.height = mapImg.height;
+			var gridNum = 190;
+
+			console.log("mapImg", mapImg.width, mapImg.height);
+			window.z = 0;
+			
+			function createGrids_() {
+				var gridHeight = 0;
+				var w = mapImg.width;
+				var h = mapImg.height;
+				var eh = h/gridNum;
+				for (var i = 0; i < gridNum; i++) {
+					ctx.save();
+					
+					var pos = to2d(0, 100, i * eh);
+					var x = pos.x;
+					var y = pos.y;
+					var s = pos.scale * 10;
+
+					ctx.translate(x, y);
+					ctx.scale(s, s);
+					ctx.drawImage(mapImg, 0, eh * i + z, w, eh, w * -.5, 0, w, eh);
+					ctx.restore();
+				}
+			}
+
+			function to2d(x, y, z){
+				var viewDistance = 500;
+		    	var perspective = viewDistance / (viewDistance - z);
+		       
+		        return {
+		        	x:275 + x * perspective,
+		        	y: y * perspective,
+		        	scale:perspective
+		        }
+			}
+
+			
+
+			setInterval(function(){
+				createGrids_();
+				z-=.1
+			}, 1000/60)
+		}
+
+	</script>
+</body>
+</html>
