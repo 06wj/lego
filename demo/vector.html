@@ -4,14 +4,24 @@
 	<meta charset="UTF-8">
 	<title>vector</title>
 	<style>
-		canvas{
-			margin:0 auto;
-			border:1px solid #000;
+		body{
 			background: #000;
+		}
+		canvas{
+			display: block;
+			margin:30px auto;
+			border:1px solid #333;
+			background: #000;
+		}
+
+		img{
+			display:none;
 		}
 	</style>
 </head>
 <body>
+	<img src="./assets/player.png" id="player">
+	<img src="./assets/bullet.png" id="bullet">
 	<script>
 		var canvasWidth = 550;
 		var canvasHeight = 400;
@@ -280,6 +290,88 @@
 
 		var x = 0;
 		var v = 25;
+
+		var keys = {};
+		var UP = 38;
+		var DOWN = 40;
+		var LEFT = 37;
+		var RIGHT = 39;
+		document.onkeydown = function(e){
+			keys[e.keyCode] = true;
+		};
+
+		document.onkeyup = function(e){
+			keys[e.keyCode] = false;
+		};
+
+		var bullets = [];
+		var bulletImg = document.getElementById("bullet");
+		var ttt = 0;
+		var player = {
+			x:canvasWidth*.5,
+			y:canvasHeight*.8,
+			scale:.5,
+			rotation:0,
+			vx:0,
+			vy:0,
+			img:document.getElementById("player"),
+			update:function(){
+				var speed = 3;
+				if(keys[UP]){
+					this.vy = -speed;
+				}
+				else if(keys[DOWN]){
+					this.vy = speed;
+				}
+				else{
+					this.vy = 0;
+				}
+
+				if(keys[LEFT]){
+					this.vx = -speed;
+				}
+				else if(keys[RIGHT]){
+					this.vx = speed;
+				}
+				else{
+					this.vx = 0;
+				}
+
+				this.x += this.vx;
+				this.y += this.vy;
+
+				var v = this.vx * this.vx + this.vy * this.vy;
+				grid.applyDirectedForce(new Vector3(0, 0, v * 50), new Vector3(this.x, this.y, 0), 10);
+				ctx.save();
+				ctx.translate(this.x, this.y);
+				ctx.scale(this.scale, this.scale);
+				ctx.rotate(this.rotation);
+				ctx.drawImage(this.img, -32, -32);
+				ctx.restore();
+
+				if(ttt%80 == 0){
+					var b = {
+						x:this.x,
+						y:this.y,
+						update:function(){
+							if(!this.die){
+								if(this.y < -100){
+									this.die = true;
+								}
+								this.y -= 6;
+								grid.applyExplosiveForce(20, new Vector3(this.x, this.y, 0), 50);
+								ctx.drawImage(bulletImg, 0, 0, 16, 16, this.x - 8, this.y - 8, 16, 16);
+							}
+						}
+					}
+					bullets.push(b);
+				}
+				ttt++;
+
+			}
+		};
+
+
 		function gameloop(){
 			ctx.strokeStyle = "rgba(0, 255, 255, .5)";
 			ctx.lineWidth = .5;
@@ -288,14 +380,18 @@
 			
 			grid.update();
 			ctx.stroke();
-			grid.applyImplosiveForce(20, new Vector3(275 + x, 200, 0), 50);
-			grid.applyImplosiveForce(15, new Vector3(275 + x*.9, 200, 0), 30);
-			grid.applyDirectedForce(new Vector3(0, 0, 500), new Vector3(275 + x*.9, 200, 0), 30);
 			
-			x += v;
-			if(x > canvasWidth*.5 || x < canvasWidth * -.5){
-				v*=-1
-			}
+			// grid.applyImplosiveForce(15, new Vector3(275 + x*.9, 200, 0), 30);
+			// grid.applyDirectedForce(new Vector3(0, 0, 500), new Vector3(275 + x*.9, 200, 0), 30);
+			
+
+			player.update();
+			bullets.forEach(function(b, i){
+				b.update();
+				if(b.die){
+					bullets.splice(i, 1);
+				}
+			});
 		}
 
 		function to2d(pos){
