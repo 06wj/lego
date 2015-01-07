@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>zmap</title>
+</head>
+<body>
+	<script>
+
+		var sin = Math.sin;
+		var cos = Math.cos;
+
+		// define engine dimension //
+		var ht = 100; // height
+
+		var wd = 350; // width
+
+		var sub_div = 100;		// subdivisions
+
+		var row_dist = ht / sub_div;
+
+		// define bitmaps object //
+
+		enviro = [
+
+			{ sym: "arrow" , mx: -64 , my: -64 },
+
+			{ sym: "arrow" , mx: 64 , my: -64 },
+
+			{ sym: "arrow" , mx: 64 , my: 64 },
+
+			{ sym: "arrow" , mx:- 64 , my: 64 }
+
+		];
+
+		// controller //
+
+		var tex3d = {};
+
+		var onMove;
+
+		tex3d.move = function () {
+
+			this.broadcastMessage ( "onMove" );
+
+		};
+
+		ASBroadcaster.initialize ( tex3d );
+
+		// move event //
+
+		onMove = function () {
+
+			this.map_d0._rotation = rot;
+
+			var pmc = this.map_d1;
+
+			pmc._x = x;
+			pmc._y = y;
+
+		}
+
+		// setUp bitmap 3ddistort workaround //
+
+		// -- row container
+
+		for ( var i = 0 ; i < sub_div ; i++ ) {
+
+			var row = clip3d.createEmptyMovieClip ( "row_" + i , i );
+
+			var row_data  = row.createEmptyMovieClip ( "row" , 0 );
+
+			var map_d0 = row.map_d0  = row_data.createEmptyMovieClip ( "rotation" , 0 );
+
+			map_d0._y = -camDist;	// distance to camera //
+
+			row.map_d1  = map_d0.attachMovie ( "image" , "image" , 0 );
+
+			var mask = row.createEmptyMovieClip ( "mask" , 1 );
+
+			with ( mask ) {
+
+				beginFill ( 0xffcc00 );
+
+				moveTo ( -wd / 2 , -i * row_dist );
+				lineTo ( wd / 2 , -i * row_dist  );
+				lineTo ( wd / 2 , -( i + 1 ) * row_dist );
+				lineTo ( -wd / 2 , -( i + 1 ) * row_dist );
+				lineTo ( -wd / 2 , -i * row_dist );
+
+				endFill ();
+
+			}
+
+			tex3d.addListener ( row );
+
+			row.onMove = onMove;
+
+			row_data._xscale = ( 100 - i ) * 4;
+			row_data._yscale = ( 100 - i ) * 2;
+
+			row_data.setMask ( mask );
+
+		}
+
+
+		// -- Bitmap enviroment setUp
+
+		var num = i;
+
+		onMove = function () {
+
+			var tx , ty;
+
+			// precalc vector to camera //
+
+			var vx = this.mx + x;
+			var vy = camDist - y - this.my;
+
+			var angle = angle + Math.PI/2;
+
+			// rotate to 0 radians to make it simple to compute the screenpositions //
+
+			tx = vy * sin ( angle ) + vx * cos ( angle );
+			ty = vy * cos ( angle ) - vx * sin ( angle );
+
+			if ( ty < 0 ) { this._visible = 0; } else { this._visible = 1; };		// clipping
+
+			var i = -ty * 200 / ( 100 + 2 * ty );	// which movieClip from the mapping structure ? <> which y position on screen
+
+			this._x = tx / 100 * ( ( 100 + i ) * 4 );
+
+			this._y = i;
+
+			this._xscale = this._yscale = ( 100 + i ) * 2;
+
+		}
+
+		// setUP Bitmaps
+
+		for ( var e in enviro ) {
+
+			var elem = enviro[ e ];
+
+			var obj = clip3d.attachMovie ( elem.sym , "obj" + num , num++ , { mx: elem.mx , my: elem.my } );
+
+			obj.onMove = onMove;
+
+			tex3d.addListener ( obj );
+
+		}
+
+		// ------------------- //
+		// engine start values //
+		// ------------------- //
+
+		var x = 0;
+		var y = 0;
+		var rot = 0;
+
+		var vl = 0;	// velocity
+		var dl = 0;	// drive
+
+		var dmax = 4;
+
+		var angle;
+
+		onEnterFrame = function () {
+
+			if ( Key.isDown ( Key.RIGHT ) && dl > -dmax ) dl -= 4 / 12;
+			if ( Key.isDown ( Key.LEFT  ) && dl <  dmax ) dl += 4 / 12;
+			if ( Key.isDown ( Key.DOWN ) && vl > -6 ) vl -= .4;
+			if ( Key.isDown ( Key.UP   ) && vl <  6 ) vl += .4;
+
+			vl *= .96;	// release speed
+			dl *= .9;	// release drive
+
+			rot += dl;
+
+			angle = rot / 180 * Math.PI - Math.PI / 2;
+
+			var vx = cos ( angle );
+			var vy = sin ( angle );
+
+			x += vl * vx;
+			y -= vl * vy;
+
+			tex3d.move ();
+
+		}
+
+		this.onEnterFrame();
+	</script>
+</body>
+</html>
