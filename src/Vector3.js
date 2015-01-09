@@ -108,6 +108,5 @@ var Vector3 = {
 			v0[1] - v1[1],
 			v0[2] - v1[2]
 		);
-	},
-	getAngle:func
+	}
 };
