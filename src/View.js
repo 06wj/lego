@@ -1,4 +1,4 @@
-/** 
+/**
  * @class View 渲染基类
  * @module lego/View
  * @memberof lego
@@ -21,7 +21,7 @@
  * @property {Boolean} visible 是否显示
  * @property {View} parent 父容器
  * @property {View} children 子容器
- * @constructor View 
+ * @constructor View
  * @param {Object} cfg 传入属性
 */
 var View = function(cfg){
@@ -51,10 +51,12 @@ var View = function(cfg){
 	lego.merge(this, cfg);
 };
 
-lego.merge(View.prototype, {
+lego.merge(View.prototype,
+	/** @lends lego.View.prototype */
+	{
 	/**
 	 * 添加对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	addChild:function(child){
 		child.removeFromParent();
@@ -65,7 +67,7 @@ lego.merge(View.prototype, {
 	},
 	/**
 	 * 移除对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	removeChild:function(child){
 		var index = this.children.indexOf(child);
@@ -83,11 +85,11 @@ lego.merge(View.prototype, {
 			parent.removeChild(this);
 		}
 	},
-	/*
+	/**
 	 * 渲染
-	 * @param {Number} ctx 绘图上下文
-	 * @param {Number} dt 时间间隔
-	**/
+	 * @param {CanvasContext2d} ctx
+	 * @param {Number} dt
+	*/
 	render:function(ctx, dt){
 		var children = this.children;
 		this.onUpdate && this.onUpdate(dt);
@@ -102,6 +104,9 @@ lego.merge(View.prototype, {
 		this._draw(ctx);
 		ctx.restore();
 	},
+	/**
+	 * 获取坐标
+	*/
 	getVector:function(){
 		var finalMat = Matrix4.create();
 		var parent = this.parent;
@@ -124,6 +129,10 @@ lego.merge(View.prototype, {
 		window.finalMat = finalMat;
 		return Matrix4.multiplyVector3(finalMat, [this.x, this.y, this.z]);
 	},
+	/**
+	 * 转换坐标
+	 * @param {CanvasContext2d} ctx
+	*/
 	_transform:function(ctx){
 		var vec = this.getVector();
 		var pos = lego.to2d({
@@ -135,6 +144,7 @@ lego.merge(View.prototype, {
 	},
 	/**
      * 子类自己实现渲染方法
+     * @param {CanvasContext2d} ctx
 	*/
 	_draw:function(ctx){
 

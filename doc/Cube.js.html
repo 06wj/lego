@@ -201,6 +201,26 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Cube#_draw"><a href="lego.Cube.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Cube#_render"><a href="lego.Cube.html#_render">_render</a></li>
+            
+                <li data-name="lego.Cube#_transform"><a href="lego.Cube.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Cube#addChild"><a href="lego.Cube.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Cube#getVector"><a href="lego.Cube.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Cube#init"><a href="lego.Cube.html#init">init</a></li>
+            
+                <li data-name="lego.Cube#removeChild"><a href="lego.Cube.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Cube#removeFromParent"><a href="lego.Cube.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Cube#render"><a href="lego.Cube.html#render">render</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -219,6 +239,26 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Group#_draw"><a href="lego.Group.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Group#_render"><a href="lego.Group.html#_render">_render</a></li>
+            
+                <li data-name="lego.Group#_transform"><a href="lego.Group.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Group#addChild"><a href="lego.Group.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Group#getVector"><a href="lego.Group.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Group#init"><a href="lego.Group.html#init">init</a></li>
+            
+                <li data-name="lego.Group#removeChild"><a href="lego.Group.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Group#removeFromParent"><a href="lego.Group.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Group#render"><a href="lego.Group.html#render">render</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -239,6 +279,32 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Stage#_draw"><a href="lego.Stage.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Stage#_init"><a href="lego.Stage.html#_init">_init</a></li>
+            
+                <li data-name="lego.Stage#_tick"><a href="lego.Stage.html#_tick">_tick</a></li>
+            
+                <li data-name="lego.Stage#_transform"><a href="lego.Stage.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Stage#addChild"><a href="lego.Stage.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Stage#getVector"><a href="lego.Stage.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Stage#removeChild"><a href="lego.Stage.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Stage#removeFromParent"><a href="lego.Stage.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Stage#render"><a href="lego.Stage.html#render">render</a></li>
+            
+                <li data-name="lego.Stage#resize"><a href="lego.Stage.html#resize">resize</a></li>
+            
+                <li data-name="lego.Stage#start"><a href="lego.Stage.html#start">start</a></li>
+            
+                <li data-name="lego.Stage#stop"><a href="lego.Stage.html#stop">stop</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -257,6 +323,22 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.View#_draw"><a href="lego.View.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.View#_transform"><a href="lego.View.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.View#addChild"><a href="lego.View.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.View#getVector"><a href="lego.View.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.View#removeChild"><a href="lego.View.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.View#removeFromParent"><a href="lego.View.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.View#render"><a href="lego.View.html#render">render</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -284,7 +366,7 @@
  * @property {Number} h 高
  * @property {Number} l 长
  * @extends lego.Group
- * @constructor Cube 
+ * @constructor Cube
 */
 var Cube = function(cfg){
 	this.w = 0;
@@ -293,7 +375,12 @@ var Cube = function(cfg){
 	Group.call(this, cfg);
 };
 
-lego.extend(Cube, Group, {
+lego.extend(Cube, Group,
+/** @lends lego.Cube.prototype */
+{
+	/**
+     * @function
+	*/
 	init:function(){
 		var w = this.w;
 		var h = this.h;
@@ -325,7 +412,8 @@ lego.extend(Cube, Group, {
 		];
 		Group.prototype.init.call(this);
 	}
-});</code></pre>
+});
+</code></pre>
         </article>
     </section>
 

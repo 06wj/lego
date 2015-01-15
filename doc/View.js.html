@@ -201,6 +201,26 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Cube#_draw"><a href="lego.Cube.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Cube#_render"><a href="lego.Cube.html#_render">_render</a></li>
+            
+                <li data-name="lego.Cube#_transform"><a href="lego.Cube.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Cube#addChild"><a href="lego.Cube.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Cube#getVector"><a href="lego.Cube.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Cube#init"><a href="lego.Cube.html#init">init</a></li>
+            
+                <li data-name="lego.Cube#removeChild"><a href="lego.Cube.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Cube#removeFromParent"><a href="lego.Cube.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Cube#render"><a href="lego.Cube.html#render">render</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -219,6 +239,26 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Group#_draw"><a href="lego.Group.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Group#_render"><a href="lego.Group.html#_render">_render</a></li>
+            
+                <li data-name="lego.Group#_transform"><a href="lego.Group.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Group#addChild"><a href="lego.Group.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Group#getVector"><a href="lego.Group.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Group#init"><a href="lego.Group.html#init">init</a></li>
+            
+                <li data-name="lego.Group#removeChild"><a href="lego.Group.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Group#removeFromParent"><a href="lego.Group.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Group#render"><a href="lego.Group.html#render">render</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -239,6 +279,32 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.Stage#_draw"><a href="lego.Stage.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.Stage#_init"><a href="lego.Stage.html#_init">_init</a></li>
+            
+                <li data-name="lego.Stage#_tick"><a href="lego.Stage.html#_tick">_tick</a></li>
+            
+                <li data-name="lego.Stage#_transform"><a href="lego.Stage.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.Stage#addChild"><a href="lego.Stage.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.Stage#getVector"><a href="lego.Stage.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.Stage#removeChild"><a href="lego.Stage.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.Stage#removeFromParent"><a href="lego.Stage.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.Stage#render"><a href="lego.Stage.html#render">render</a></li>
+            
+                <li data-name="lego.Stage#resize"><a href="lego.Stage.html#resize">resize</a></li>
+            
+                <li data-name="lego.Stage#start"><a href="lego.Stage.html#start">start</a></li>
+            
+                <li data-name="lego.Stage#stop"><a href="lego.Stage.html#stop">stop</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -258,6 +324,22 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="lego.View#_draw"><a href="lego.View.html#_draw">_draw</a></li>
+            
+                <li data-name="lego.View#_transform"><a href="lego.View.html#_transform">_transform</a></li>
+            
+                <li data-name="lego.View#addChild"><a href="lego.View.html#addChild">addChild</a></li>
+            
+                <li data-name="lego.View#getVector"><a href="lego.View.html#getVector">getVector</a></li>
+            
+                <li data-name="lego.View#removeChild"><a href="lego.View.html#removeChild">removeChild</a></li>
+            
+                <li data-name="lego.View#removeFromParent"><a href="lego.View.html#removeFromParent">removeFromParent</a></li>
+            
+                <li data-name="lego.View#render"><a href="lego.View.html#render">render</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -274,7 +356,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>/** 
+            <pre class="prettyprint source"><code>/**
  * @class View 渲染基类
  * @module lego/View
  * @memberof lego
@@ -297,7 +379,7 @@
  * @property {Boolean} visible 是否显示
  * @property {View} parent 父容器
  * @property {View} children 子容器
- * @constructor View 
+ * @constructor View
  * @param {Object} cfg 传入属性
 */
 var View = function(cfg){
@@ -327,10 +409,12 @@ var View = function(cfg){
 	lego.merge(this, cfg);
 };
 
-lego.merge(View.prototype, {
+lego.merge(View.prototype,
+	/** @lends lego.View.prototype */
+	{
 	/**
 	 * 添加对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	addChild:function(child){
 		child.removeFromParent();
@@ -341,7 +425,7 @@ lego.merge(View.prototype, {
 	},
 	/**
 	 * 移除对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	removeChild:function(child){
 		var index = this.children.indexOf(child);
@@ -359,11 +443,11 @@ lego.merge(View.prototype, {
 			parent.removeChild(this);
 		}
 	},
-	/*
+	/**
 	 * 渲染
-	 * @param {Number} ctx 绘图上下文
-	 * @param {Number} dt 时间间隔
-	**/
+	 * @param {CanvasContext2d} ctx
+	 * @param {Number} dt
+	*/
 	render:function(ctx, dt){
 		var children = this.children;
 		this.onUpdate &amp;&amp; this.onUpdate(dt);
@@ -378,6 +462,9 @@ lego.merge(View.prototype, {
 		this._draw(ctx);
 		ctx.restore();
 	},
+	/**
+	 * 获取坐标
+	*/
 	getVector:function(){
 		var finalMat = Matrix4.create();
 		var parent = this.parent;
@@ -400,6 +487,10 @@ lego.merge(View.prototype, {
 		window.finalMat = finalMat;
 		return Matrix4.multiplyVector3(finalMat, [this.x, this.y, this.z]);
 	},
+	/**
+	 * 转换坐标
+	 * @param {CanvasContext2d} ctx
+	*/
 	_transform:function(ctx){
 		var vec = this.getVector();
 		var pos = lego.to2d({
@@ -411,11 +502,13 @@ lego.merge(View.prototype, {
 	},
 	/**
      * 子类自己实现渲染方法
+     * @param {CanvasContext2d} ctx
 	*/
 	_draw:function(ctx){
 
 	}
-});</code></pre>
+});
+</code></pre>
         </article>
     </section>
 

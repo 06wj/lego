@@ -13,7 +13,7 @@ var lego = {
 	 * @param {Function} parent 父类
 	 * @param {Object} cfg
 	*/
-	extend:function(child, parent, cfg){ 
+	extend:function(child, parent, cfg){
 		child.prototype = Object.create(parent.prototype);
 		child.superClass = parent;
 		if(cfg){
@@ -35,7 +35,7 @@ var lego = {
 	to2d:function(obj){
     	var viewDistance = 1000;
     	var perspective = viewDistance / (viewDistance - obj.z);
-       
+
         return {
         	x:275 + obj.x * perspective,
         	y:200 + obj.y * perspective

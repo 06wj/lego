@@ -4,9 +4,9 @@
  * @memberof lego
  * @requires lego
  * @requires lego/View
- * @property {Array} points 
- * @property {lego.View} views 
- * @property {Number} pointSize 点大小 默认为0 
+ * @property {Array} points
+ * @property {lego.View} views
+ * @property {Number} pointSize 点大小 默认为0
  * @property {Number} lineWidth 线宽 默认为1
  * @extends lego.View
  * @constructor Group
@@ -20,9 +20,12 @@ var Group = function(cfg){
 
 	this.init();
 };
-lego.extend(Group, View, 
+lego.extend(Group, View,
+	/** @lends lego.Group.prototype */
 	{
-		
+	/**
+	 * init
+	*/
 	init:function(){
 		var that = this;
 		for(var i = 0, l = this.points.length;i < l;i ++){
@@ -39,9 +42,17 @@ lego.extend(Group, View,
 			}
 		}
 	},
+	/**
+	 * _render
+	 * @param {CanvasContext2d} ctx
+	*/
 	_render:function(ctx){
-		
+
 	},
+	/**
+	 * _draw
+	 * @param {CanvasContext2d} ctx
+	*/
 	_draw:function(ctx){
 		ctx.beginPath();
 		var offset = {

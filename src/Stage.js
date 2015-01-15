@@ -8,7 +8,7 @@
  * @property {CavansContext2d} ctx
  * @property {Number} _lastTime 上次执行时间
  * @extends lego.View
- * @constructor Stage 
+ * @constructor Stage
 */
 var Stage = function(cfg){
 	this.canvas = null;
@@ -19,10 +19,11 @@ var Stage = function(cfg){
 	this._init();
 };
 
-lego.extend(Stage, View, {
+lego.extend(Stage, View,
+	/** @lends lego.Stage.prototype */
+	{
 	/**
-	 * @class Stage
-     * @function 
+     * @function
 	*/
 	_init:function(){
 		if(!this.canvas){
@@ -33,7 +34,7 @@ lego.extend(Stage, View, {
 		this.resize(this.width, this.height);
 	},
 	/**
-     * 
+     * @function
 	*/
 	_tick:function _tick(){
 		var nowTime = +new Date();
@@ -42,6 +43,9 @@ lego.extend(Stage, View, {
 		this.render(ctx, nowTime - this._lastTime);
 		this._lastTime = nowTime;
 	},
+	/**
+     * @function
+	*/
 	start:function(fps){
 		var that = this;
 		this.interval = setInterval(function(){
@@ -50,9 +54,15 @@ lego.extend(Stage, View, {
 		this._lastTime = +new Date();
 		that._tick();
 	},
+	/**
+     * @function
+	*/
 	stop:function(){
 		clearInterval(this.interval);
 	},
+	/**
+     * @function
+	*/
 	resize:function(width, height){
 		this.width = width;
 		this.height = height;

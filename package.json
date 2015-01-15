@@ -15,7 +15,7 @@
     "bugs":{
         "url":"https://github.com/06wj/lego/issues"
     },
-    "main":"gulpfile.js",
+    "main":"gulpfiles.js",
     "sources":{
         "src":"src",
         "files":[

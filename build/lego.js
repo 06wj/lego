@@ -465,7 +465,7 @@ var lego = window.lego;
 var Matrix4 = lego.Matrix4;
 
 var Vector3 = lego.Vector3;
-/** 
+/**
  * @class View 渲染基类
  * @module lego/View
  * @memberof lego
@@ -488,7 +488,7 @@ var Vector3 = lego.Vector3;
  * @property {Boolean} visible 是否显示
  * @property {View} parent 父容器
  * @property {View} children 子容器
- * @constructor View 
+ * @constructor View
  * @param {Object} cfg 传入属性
 */
 var View = function(cfg){
@@ -518,10 +518,12 @@ var View = function(cfg){
 	lego.merge(this, cfg);
 };
 
-lego.merge(View.prototype, {
+lego.merge(View.prototype,
+	/** @lends lego.View.prototype */
+	{
 	/**
 	 * 添加对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	addChild:function(child){
 		child.removeFromParent();
@@ -532,7 +534,7 @@ lego.merge(View.prototype, {
 	},
 	/**
 	 * 移除对象
-	 * @param {View} child
+	 * @param {lego.View} child
 	*/
 	removeChild:function(child){
 		var index = this.children.indexOf(child);
@@ -550,11 +552,11 @@ lego.merge(View.prototype, {
 			parent.removeChild(this);
 		}
 	},
-	/*
+	/**
 	 * 渲染
-	 * @param {Number} ctx 绘图上下文
-	 * @param {Number} dt 时间间隔
-	**/
+	 * @param {CanvasContext2d} ctx
+	 * @param {Number} dt
+	*/
 	render:function(ctx, dt){
 		var children = this.children;
 		this.onUpdate && this.onUpdate(dt);
@@ -569,6 +571,9 @@ lego.merge(View.prototype, {
 		this._draw(ctx);
 		ctx.restore();
 	},
+	/**
+	 * 获取坐标
+	*/
 	getVector:function(){
 		var finalMat = Matrix4.create();
 		var parent = this.parent;
@@ -591,6 +596,10 @@ lego.merge(View.prototype, {
 		window.finalMat = finalMat;
 		return Matrix4.multiplyVector3(finalMat, [this.x, this.y, this.z]);
 	},
+	/**
+	 * 转换坐标
+	 * @param {CanvasContext2d} ctx
+	*/
 	_transform:function(ctx){
 		var vec = this.getVector();
 		var pos = lego.to2d({
@@ -602,11 +611,13 @@ lego.merge(View.prototype, {
 	},
 	/**
      * 子类自己实现渲染方法
+     * @param {CanvasContext2d} ctx
 	*/
 	_draw:function(ctx){
 
 	}
 });
+
 lego.View = View;
 
 })(this);
@@ -626,7 +637,7 @@ var View = lego.View;
  * @property {CavansContext2d} ctx
  * @property {Number} _lastTime 上次执行时间
  * @extends lego.View
- * @constructor Stage 
+ * @constructor Stage
 */
 var Stage = function(cfg){
 	this.canvas = null;
@@ -637,10 +648,11 @@ var Stage = function(cfg){
 	this._init();
 };
 
-lego.extend(Stage, View, {
+lego.extend(Stage, View,
+	/** @lends lego.Stage.prototype */
+	{
 	/**
-	 * @class Stage
-     * @function 
+     * @function
 	*/
 	_init:function(){
 		if(!this.canvas){
@@ -651,7 +663,7 @@ lego.extend(Stage, View, {
 		this.resize(this.width, this.height);
 	},
 	/**
-     * 
+     * @function
 	*/
 	_tick:function _tick(){
 		var nowTime = +new Date();
@@ -660,6 +672,9 @@ lego.extend(Stage, View, {
 		this.render(ctx, nowTime - this._lastTime);
 		this._lastTime = nowTime;
 	},
+	/**
+     * @function
+	*/
 	start:function(fps){
 		var that = this;
 		this.interval = setInterval(function(){
@@ -668,9 +683,15 @@ lego.extend(Stage, View, {
 		this._lastTime = +new Date();
 		that._tick();
 	},
+	/**
+     * @function
+	*/
 	stop:function(){
 		clearInterval(this.interval);
 	},
+	/**
+     * @function
+	*/
 	resize:function(width, height){
 		this.width = width;
 		this.height = height;
@@ -706,9 +727,9 @@ var View = lego.View;
  * @memberof lego
  * @requires lego
  * @requires lego/View
- * @property {Array} points 
- * @property {lego.View} views 
- * @property {Number} pointSize 点大小 默认为0 
+ * @property {Array} points
+ * @property {lego.View} views
+ * @property {Number} pointSize 点大小 默认为0
  * @property {Number} lineWidth 线宽 默认为1
  * @extends lego.View
  * @constructor Group
@@ -722,9 +743,12 @@ var Group = function(cfg){
 
 	this.init();
 };
-lego.extend(Group, View, 
+lego.extend(Group, View,
+	/** @lends lego.Group.prototype */
 	{
-		
+	/**
+	 * init
+	*/
 	init:function(){
 		var that = this;
 		for(var i = 0, l = this.points.length;i < l;i ++){
@@ -741,9 +765,17 @@ lego.extend(Group, View,
 			}
 		}
 	},
+	/**
+	 * _render
+	 * @param {CanvasContext2d} ctx
+	*/
 	_render:function(ctx){
-		
+
 	},
+	/**
+	 * _draw
+	 * @param {CanvasContext2d} ctx
+	*/
 	_draw:function(ctx){
 		ctx.beginPath();
 		var offset = {
@@ -765,6 +797,7 @@ lego.extend(Group, View,
 		ctx.stroke();
 	}
 });
+
 lego.Group = Group;
 
 })(this);
@@ -784,7 +817,7 @@ var Group = lego.Group;
  * @property {Number} h 高
  * @property {Number} l 长
  * @extends lego.Group
- * @constructor Cube 
+ * @constructor Cube
 */
 var Cube = function(cfg){
 	this.w = 0;
@@ -793,7 +826,12 @@ var Cube = function(cfg){
 	Group.call(this, cfg);
 };
 
-lego.extend(Cube, Group, {
+lego.extend(Cube, Group,
+/** @lends lego.Cube.prototype */
+{
+	/**
+     * @function
+	*/
 	init:function(){
 		var w = this.w;
 		var h = this.h;
@@ -826,6 +864,7 @@ lego.extend(Cube, Group, {
 		Group.prototype.init.call(this);
 	}
 });
+
 lego.Cube = Cube;
 
 })(this);

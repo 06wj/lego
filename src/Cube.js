@@ -8,7 +8,7 @@
  * @property {Number} h 高
  * @property {Number} l 长
  * @extends lego.Group
- * @constructor Cube 
+ * @constructor Cube
 */
 var Cube = function(cfg){
 	this.w = 0;
@@ -17,7 +17,12 @@ var Cube = function(cfg){
 	Group.call(this, cfg);
 };
 
-lego.extend(Cube, Group, {
+lego.extend(Cube, Group,
+/** @lends lego.Cube.prototype */
+{
+	/**
+     * @function
+	*/
 	init:function(){
 		var w = this.w;
 		var h = this.h;
